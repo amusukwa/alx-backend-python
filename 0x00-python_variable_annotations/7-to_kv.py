@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Module convets string and int/float into tuple."""
 
 from typing import Union, Tuple
 

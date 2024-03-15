@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+"""Module summing elements in a list in function."""
 from typing import List
 
 
