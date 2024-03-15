@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""A module for finding int of a float numbers."""
 import math
 
 
