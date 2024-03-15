@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Module defining variables with type annotations."""
 
 
 a: int = 1
