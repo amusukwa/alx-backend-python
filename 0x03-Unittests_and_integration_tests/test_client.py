@@ -2,6 +2,7 @@
 """ Module for test_client """
 import unittest
 from unittest.mock import patch, PropertyMock
+from parameterized import parameterized  # Import parameterized module
 from client import GithubOrgClient
 from typing import List, Dict
 
