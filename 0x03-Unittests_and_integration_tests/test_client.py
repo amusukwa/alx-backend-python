@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Module for test_client """
-import unittest
+import unittest  # Add this line to import unittest
 from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
@@ -85,4 +85,3 @@ class TestGithubOrgClient(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
