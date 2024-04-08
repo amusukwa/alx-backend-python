@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-""" Module for test-utils"""
+""" Module for test_util"""
 import unittest
 from typing import Mapping, Sequence, Any, Dict
 from parameterized import parameterized
 from utils import access_nested_map
+from unittest.mock import patch, Mock
+from utils import get_json
+from utils import memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -27,16 +30,14 @@ class TestAccessNestedMap(unittest.TestCase):
             access_nested_map(nested_map, path)
         self.assertEqual(str(context.exception), expected_error_msg)
 
+
 class TestGetJson(unittest.TestCase):
 
     @patch('utils.requests.get')
-    @unittest.parametrize(
-        ("test_url", "test_payload"),
-        [
-            ("http://example.com", {"payload": True}),
-            ("http://holberton.io", {"payload": False})
-        ]
-    )
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False})
+    ])
     def test_get_json(self, mock_get: Mock, test_url: str, test_payload: Dict[str, Any]) -> None:
         # Create a mock response object
         mock_response = Mock()
@@ -48,10 +49,37 @@ class TestGetJson(unittest.TestCase):
         # Call the get_json function with the test_url
         result = get_json(test_url)
 
-        # Assert that the mocked get method was called exactly once with test_url as argument
+        # Assert that the mocked get method was called exact
         mock_get.assert_called_once_with(test_url)
-        # Assert that the output of get_json is equal to test_payload
         self.assertEqual(result, test_payload)
+
+
+class TestMemoize(unittest.TestCase):
+
+    class TestClass:
+        def a_method(self):
+            return 42
+
+        @memoize
+        def a_property(self):
+            return self.a_method()
+
+    def test_memoize(self):
+        # Create an instance of TestClass
+        test_instance = self.TestClass()
+
+        # Patch the a_method method of TestClass
+        with patch.object(test_instance, 'a_method') as mock_a_method:
+            # Call the a_property method twice
+            result1 = test_instance.a_property()
+            result2 = test_instance.a_property()
+
+            # Assert that a_method was only called once
+            mock_a_method.assert_called_once()
+
+            # Assert that the results are correct
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
 
 
 if __name__ == "__main__":
